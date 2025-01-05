@@ -5,7 +5,7 @@
             <h3 class="text-lg font-semibold text-gray-800 mb-4">Log Files</h3>
             <ul class="space-y-2">
                 @foreach ($logFiles as $logFile)
-                    <li>
+                    <li class="flex justify-between items-center">
                         <button
                             class="w-full text-left p-2 bg-gray-100 rounded-md hover:bg-blue-100 focus:outline-none focus:ring focus:ring-blue-300 transition"
                             wire:click="loadLogs('{{ $logFile['date'] }}')"
@@ -15,9 +15,18 @@
                                 <span class="text-sm text-gray-500">{{ $logFile['size'] }}</span>
                             </div>
                         </button>
+                        <button
+                            class="p-2 text-red-600 hover:text-red-800"
+                            wire:click="deleteLogFile('{{ $logFile['date'] }}')"
+                            onclick="confirm('Are you sure you want to delete this log file?') || event.stopImmediatePropagation()"
+                            title="Delete Log File"
+                        >
+                            ✖
+                        </button>
                     </li>
                 @endforeach
             </ul>
+
         </div>
 
         <!-- Logs Viewer (flexible width) -->
@@ -29,12 +38,6 @@
                     @else
                         <h2 class="text-xl font-bold text-gray-800">Log Viewer</h2>
                     @endif
-                    <input
-                        type="text"
-                        placeholder="Search logs..."
-                        class="w-1/2 p-2 rounded-md border border-gray-300 focus:ring focus:ring-blue-300"
-                        wire:model="search"
-                    />
                 </div>
             </div>
 

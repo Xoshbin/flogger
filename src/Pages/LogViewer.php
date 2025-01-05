@@ -4,6 +4,7 @@ namespace Xoshbin\Flogger\Pages;
 
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\File;
+use Filament\Notifications\Notification;
 
 class LogViewer extends Page
 {
@@ -19,7 +20,8 @@ class LogViewer extends Page
     public $logLines = [];
     public $selectedDate = null;
     public $expandedLogIndex = null;
-    public $search = '';
+    public $confirmingDelete = false;
+    public $fileToDelete = null;
 
     public function mount()
     {
@@ -63,10 +65,6 @@ class LogViewer extends Page
                         'index' => $index,
                     ];
                 })
-                ->filter(function ($log) {
-                    // Filter logs based on search query
-                    return str_contains(strtolower($log['full']), strtolower($this->search));
-                })
                 ->toArray();
         } else {
             $this->logLines = [];
@@ -106,10 +104,37 @@ class LogViewer extends Page
         $this->expandedLogIndex = $this->expandedLogIndex === $index ? null : $index;
     }
 
-    public function updatedSearch()
+
+    public function deleteLogFile($date)
     {
-        if ($this->selectedDate) {
-            $this->loadLogs($this->selectedDate);
+        // Find the file path for the selected date
+        $filePath = collect($this->logFiles)->firstWhere('date', $date)['path'] ?? null;
+
+        if ($filePath && File::exists($filePath)) {
+            File::delete($filePath);
+            $this->logFiles = collect(File::files(storage_path('logs')))
+                ->map(function ($file) {
+                    return [
+                        'date' => $file->getFilenameWithoutExtension(),
+                        'path' => $file->getRealPath(),
+                        'size' => $this->formatBytes(filesize($file->getRealPath())),
+                    ];
+                })->sortByDesc('date')->values()->toArray();
+
+            if ($this->selectedDate === $date) {
+                $this->selectedDate = null;
+                $this->logLines = [];
+            }
+
+            Notification::make()
+                ->title('Log file deleted successfully!')
+                ->success()
+                ->send();
+        } else {
+            Notification::make()
+                ->title('Log file not found!')
+                ->danger()
+                ->send();
         }
     }
 }
