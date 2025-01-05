@@ -41,22 +41,11 @@
             <div class="flex-1 p-4 overflow-y-auto">
                 @if ($logLines)
                     <ul class="space-y-4">
-                        @foreach ($logLines as $index => $logLine)
+                        @foreach (collect($logLines)->reverse() as $index => $logLine)
                             <li>
                                 <div
-                                    class="p-4 rounded-lg shadow-sm border cursor-pointer hover:bg-gray-100 transition-all"
-                                    wire:click="toggleLogExpansion({{ $index }})"
-                                    @class([
-                                        'bg-custom-100 border-l-4 border-custom-600 ring-custom-600' => $logLine['type'] === 'emergency',
-                                        'bg-warning-100 border-l-4 border-warning-600 ring-warning-600' => $logLine['type'] === 'alert',
-                                        'bg-danger-100 border-l-4 border-danger-600 ring-danger-600' => $logLine['type'] === 'critical',
-                                        'bg-warning-50 border-l-4 border-warning-500 ring-warning-500' => $logLine['type'] === 'warning',
-                                        'bg-success-50 border-l-4 border-success-500 ring-success-500' => $logLine['type'] === 'info',
-                                        'bg-primary-50 border-l-4 border-primary-500 ring-primary-500' => $logLine['type'] === 'notice',
-                                        'bg-gray-50 border-l-4 border-gray-400 ring-gray-400' => $logLine['type'] === 'debug',
-                                        'border border-gray-200'
-                                    ])
-                                >
+                                    class="p-4 rounded-lg shadow-sm border cursor-pointer hover:bg-gray-100 transition-all {{ $this->getLogLineClass($logLine['type']) }}"
+                                    wire:click="toggleLogExpansion({{ $index }})">
                                     <div class="flex justify-between items-center mb-2">
                                         <span class="text-sm font-semibold text-gray-600 capitalize">{{ $logLine['type'] }}</span>
                                         <span class="text-sm text-gray-500">{{ $logLine['timestamp'] }}</span>

@@ -73,6 +73,21 @@ class LogViewer extends Page
         }
     }
 
+    function getLogLineClass($type)
+    {
+        return match ($type) {
+            'emergency' => 'border-emergency',
+            'alert' => 'border-alert',
+            'critical' => 'border-critical',
+            'error' => 'border-error',
+            'warning' => 'border-warning',
+            'info' => 'border-info',
+            'notice' => 'border-notice',
+            'debug' => 'border-debug',
+            default => 'border-debug',
+        };
+    }
+
     private function formatBytes($bytes, $precision = 2)
     {
         $units = ['B', 'KB', 'MB', 'GB', 'TB'];

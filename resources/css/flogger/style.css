@@ -1,25 +1,31 @@
-.bg-danger {
-  background-color: rgb(185 28 28);
+.border-emergency {
+  border-color: rgb(153, 27, 27) !important;
 }
 
-.bg-warning {
-  background-color: rgb(251 191 36);
+.border-alert {
+  border-color: rgb(220, 38, 38) !important;
 }
 
-.bg-info {
-  background-color: rgb(34 211 238);
+.border-critical {
+  border-color: rgb(239, 68, 68) !important;
 }
 
-.no-bottom-radius {
-  border-bottom-left-radius: 0 !important;
-  border-bottom-right-radius: 0 !important;
+.border-error {
+  border-color: rgb(248, 113, 113) !important;
 }
 
-.no-top-radius {
-  border-top-left-radius: 0 !important;
-  border-top-right-radius: 0 !important;
+.border-warning {
+  border-color: rgb(251, 191, 36) !important;
 }
 
-.mb-0 {
-  margin-bottom: 0 !important;
+.border-notice {
+  border-color: rgb(96, 165, 250) !important;
+}
+
+.border-info {
+  border-color: rgb(34, 211, 238) !important;
+}
+
+.border-debug {
+  border-color: rgb(107, 114, 128) !important;
 }
