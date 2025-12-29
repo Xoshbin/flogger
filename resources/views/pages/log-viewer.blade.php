@@ -34,7 +34,32 @@
             <div class="p-4 border-b border-gray-200 flex-shrink-0">
                 <div class="flex justify-between items-center">
                     @if ($selectedDate)
-                        <h2 class="text-xl font-bold text-gray-800">Logs for {{ $selectedDate }}</h2>
+                        <div class="flex items-center gap-4">
+                            <h2 class="text-xl font-bold text-gray-800">Logs for {{ $selectedDate }}</h2>
+                            @if ($this->totalPages > 1)
+                                <div class="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-1 border border-gray-200">
+                                    <button
+                                        wire:click="previousPage"
+                                        wire:loading.attr="disabled"
+                                        class="px-2 py-1 text-sm font-medium rounded hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors {{ $this->page <= 1 ? 'text-gray-400' : 'text-blue-600 hover:text-blue-700 hover:shadow-sm' }}"
+                                        @if($this->page <= 1) disabled @endif
+                                    >
+                                        &larr; Newer
+                                    </button>
+                                    <span class="text-sm text-gray-600 font-medium px-2 border-l border-r border-gray-200">
+                                        Page {{ $this->page }} of {{ $this->totalPages }}
+                                    </span>
+                                    <button
+                                        wire:click="nextPage"
+                                        wire:loading.attr="disabled"
+                                        class="px-2 py-1 text-sm font-medium rounded hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors {{ $this->page >= $this->totalPages ? 'text-gray-400' : 'text-blue-600 hover:text-blue-700 hover:shadow-sm' }}"
+                                        @if($this->page >= $this->totalPages) disabled @endif
+                                    >
+                                        Older &rarr;
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
                     @else
                         <h2 class="text-xl font-bold text-gray-800">Log Viewer</h2>
                     @endif
