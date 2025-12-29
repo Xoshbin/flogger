@@ -8,6 +8,7 @@
 - **Log Viewing**: View daily log files with a clean, color-coded interface.
 - **Filtering**: Automatically categorizes logs by level (e.g., Info, Error, Warning, Debug) with distinct styling.
 - **Details**: Expand individual log entries to view the full stack trace or message.
+- **Copy Functionality**: Easily copy full log details to your clipboard with a single click.
 - **File Management**: Delete old log files directly from the viewer to free up space.
 - **Navigation**: Easily navigate between different dates/log files.
 
