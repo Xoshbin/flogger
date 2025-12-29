@@ -29,3 +29,13 @@
 .border-debug {
   border-color: rgb(107, 114, 128) !important;
 }
+
+.flogger-copied-button {
+    background-color: rgb(220 252 231) !important; /* bg-green-100 */
+    color: rgb(21 128 61) !important; /* text-green-700 */
+    border-color: rgb(187 247 208) !important; /* border-green-200 */
+}
+
+.flogger-copied-icon {
+    color: rgb(21 128 61) !important; /* text-green-700 */
+}

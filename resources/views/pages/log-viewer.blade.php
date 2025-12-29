@@ -51,11 +51,50 @@
                                     wire:click="toggleLogExpansion({{ $index }})">
                                     <div class="flex justify-between items-center mb-2">
                                         <span class="text-sm font-semibold text-gray-600 capitalize">{{ $logLine['type'] }}</span>
-                                        <span class="text-sm text-gray-500">{{ $logLine['timestamp'] }}</span>
+                                        <div class="flex items-center gap-2" x-data="{ copied: false }">
+                                            <span class="text-sm text-gray-500">{{ $logLine['timestamp'] }}</span>
+                                            <button
+                                                x-on:click.stop="
+                                                    const text = @js($logLine['full']);
+                                                    if (window.navigator && window.navigator.clipboard) {
+                                                        window.navigator.clipboard.writeText(text);
+                                                        copied = true;
+                                                    } else {
+                                                        const textArea = document.createElement('textarea');
+                                                        textArea.value = text;
+                                                        document.body.appendChild(textArea);
+                                                        textArea.focus();
+                                                        textArea.select();
+                                                        try {
+                                                            document.execCommand('copy');
+                                                            copied = true;
+                                                        } catch (err) {
+                                                            console.error('Fallback: Oops, unable to copy', err);
+                                                        }
+                                                        document.body.removeChild(textArea);
+                                                    }
+                                                    setTimeout(() => copied = false, 2000);
+                                                "
+                                                class="flex items-center gap-1 p-1 px-2 rounded-md transition-colors focus:outline-none text-xs font-medium border"
+                                                :class="copied ? 'flogger-copied-button' : 'bg-white hover:bg-gray-50 text-gray-500 border-gray-200'"
+                                                title="Copy to clipboard"
+                                            >
+                                                <!-- Heroicon: clipboard -->
+                                                <svg x-show="!copied" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                                                </svg>
+                                                <!-- Heroicon: check -->
+                                                <svg x-show="copied" style="display: none;" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 flogger-copied-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                                </svg>
+                                                <span x-show="copied" style="display: none;">Copied!</span>
+                                                <span x-show="!copied">Copy</span>
+                                            </button>
+                                        </div>
                                     </div>
                                     <div class="mt-2 text-sm text-gray-800 overflow-x-auto whitespace-pre-wrap break-words border-t pt-2">
                                         @if ($expandedLogIndex === $index)
-                                            <pre class="bg-gray-100 p-2 rounded-lg text-sm font-mono text-gray-800 overflow-y-auto">{{ $logLine['full'] }}</pre>
+                                            <pre class="bg-gray-100 p-2 rounded-lg text-sm font-mono text-gray-800 overflow-y-auto whitespace-pre-wrap">{{ $logLine['full'] }}</pre>
                                         @else
                                             <p class="text-gray-700">{{ $logLine['excerpt'] }}</p>
                                         @endif
