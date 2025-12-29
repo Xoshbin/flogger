@@ -12,6 +12,11 @@ class Flogger implements Plugin
         return 'xoshbin-flogger';
     }
 
+    public static function make(): static
+    {
+        return app(static::class);
+    }
+
     public function register(Panel $panel): void
     {
         $panel

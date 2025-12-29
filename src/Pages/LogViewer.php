@@ -8,6 +8,8 @@ use Filament\Notifications\Notification;
 
 class LogViewer extends Page
 {
+    protected static ?string $navigationGroup = 'Settings';
+
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static string $view = 'flogger::pages.log-viewer';
