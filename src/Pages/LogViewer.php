@@ -2,9 +2,10 @@
 
 namespace Xoshbin\Flogger\Pages;
 
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\File;
-use Filament\Notifications\Notification;
+use Illuminate\Support\Str;
 
 class LogViewer extends Page
 {
@@ -19,21 +20,43 @@ class LogViewer extends Page
     protected static ?string $title = 'Log Viewer';
 
     public $logFiles = [];
+
     public $logLines = [];
+
     public $selectedDate = null;
+
     public $expandedLogIndex = null;
+
     public $confirmingDelete = false;
+
     public $fileToDelete = null;
 
     public function mount()
     {
         // Fetch log files from storage/logs
+        $excludedFiles = config('flogger.exclude_files', []);
+
         $this->logFiles = collect(File::files(storage_path('logs')))
+            ->filter(function ($file) use ($excludedFiles) {
+                foreach ($excludedFiles as $pattern) {
+                    if (Str::is($pattern, $file->getFilename())) {
+                        return false;
+                    }
+                }
+
+                return true;
+            })
             ->map(function ($file) {
+                try {
+                    $size = $this->formatBytes(filesize($file->getRealPath()));
+                } catch (\Exception $e) {
+                    $size = 'Unknown';
+                }
+
                 return [
                     'date' => $file->getFilenameWithoutExtension(),
                     'path' => $file->getRealPath(),
-                    'size' => $this->formatBytes(filesize($file->getRealPath())), // File size
+                    'size' => $size,
                 ];
             })->sortByDesc('date')->values()->toArray();
     }
@@ -47,7 +70,11 @@ class LogViewer extends Page
         $filePath = collect($this->logFiles)->firstWhere('date', $date)['path'] ?? null;
 
         if ($filePath && File::exists($filePath)) {
-            $fileContent = File::get($filePath);
+            try {
+                $fileContent = File::get($filePath);
+            } catch (\Exception $e) {
+                $fileContent = '';
+            }
 
             // Match log entries using regex to split them
             preg_match_all(
@@ -73,7 +100,7 @@ class LogViewer extends Page
         }
     }
 
-    function getLogLineClass($type)
+    public function getLogLineClass($type)
     {
         return match ($type) {
             'emergency' => 'border-emergency',
@@ -98,14 +125,13 @@ class LogViewer extends Page
 
         $bytes /= pow(1024, $pow);
 
-        return round($bytes, $precision) . ' ' . $units[$pow];
+        return round($bytes, $precision).' '.$units[$pow];
     }
 
     public function toggleLogExpansion($index)
     {
         $this->expandedLogIndex = $this->expandedLogIndex === $index ? null : $index;
     }
-
 
     public function deleteLogFile($date)
     {

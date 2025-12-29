@@ -13,13 +13,14 @@ class FloggerServiceProvider extends PackageServiceProvider
     {
         $package
             ->name('flogger')
+            ->hasConfigFile()
             ->hasViews();
     }
 
     public function packageBooted()
     {
         FilamentAsset::register([
-            Css::make('flogger-assets', __DIR__ . '/../resources/css/flogger/style.css'),
+            Css::make('flogger-assets', __DIR__.'/../resources/css/flogger/style.css'),
         ], 'xpshbin/flogger');
     }
 }
