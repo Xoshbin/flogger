@@ -45,6 +45,20 @@ Since Flogger automatically registers its service provider, this will enable the
 
 ### Configuration
 
+You can customize Flogger's behavior by publishing the configuration file:
+
+```bash
+php artisan vendor:publish --tag="flogger-config"
+```
+
+This will create a `config/flogger.php` file where you can specify patterns for files to exclude from the viewer (e.g., to ignore temporary schedule logs).
+
+```php
+'exclude_files' => [
+    'schedule-*',
+],
+```
+
 The Log Viewer works by reading standard Laravel log files located in `storage/logs`. Ensure your application is configured to use the `daily` or `single` log channel, although `daily` provides the best experience with the file selector.
 
 If you need to publish assets (though usually handled automatically):
