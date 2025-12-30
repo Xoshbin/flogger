@@ -174,15 +174,15 @@ class LogViewer extends Page
     public function getLogLineClass($type)
     {
         return match ($type) {
-            'emergency' => 'border-emergency',
-            'alert' => 'border-alert',
-            'critical' => 'border-critical',
-            'error' => 'border-error',
-            'warning' => 'border-warning',
-            'info' => 'border-info',
-            'notice' => 'border-notice',
-            'debug' => 'border-debug',
-            default => 'border-debug',
+            'emergency' => 'border-l-4 border-red-700 dark:border-red-600 bg-red-50 dark:bg-red-900/10',
+            'alert' => 'border-l-4 border-red-600 dark:border-red-500 bg-red-50 dark:bg-red-900/10',
+            'critical' => 'border-l-4 border-red-500 dark:border-red-400 bg-red-50 dark:bg-red-900/10',
+            'error' => 'border-l-4 border-red-500 dark:border-red-400 bg-red-50 dark:bg-red-900/10',
+            'warning' => 'border-l-4 border-yellow-500 dark:border-yellow-400 bg-yellow-50 dark:bg-yellow-900/10',
+            'info' => 'border-l-4 border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/10',
+            'notice' => 'border-l-4 border-sky-400 dark:border-sky-300 bg-sky-50 dark:bg-sky-900/10',
+            'debug' => 'border-l-4 border-gray-400 dark:border-gray-500 bg-gray-50 dark:bg-gray-800/50',
+            default => 'border-l-4 border-gray-300 dark:border-gray-600',
         };
     }
 
