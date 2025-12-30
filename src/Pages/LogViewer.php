@@ -174,15 +174,15 @@ class LogViewer extends Page
     public function getLogLineClass($type)
     {
         return match ($type) {
-            'emergency' => 'border-l-4 border-red-700 dark:border-red-600 bg-red-50 dark:bg-red-900/10',
-            'alert' => 'border-l-4 border-red-600 dark:border-red-500 bg-red-50 dark:bg-red-900/10',
-            'critical' => 'border-l-4 border-red-500 dark:border-red-400 bg-red-50 dark:bg-red-900/10',
-            'error' => 'border-l-4 border-red-500 dark:border-red-400 bg-red-50 dark:bg-red-900/10',
-            'warning' => 'border-l-4 border-yellow-500 dark:border-yellow-400 bg-yellow-50 dark:bg-yellow-900/10',
-            'info' => 'border-l-4 border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/10',
-            'notice' => 'border-l-4 border-sky-400 dark:border-sky-300 bg-sky-50 dark:bg-sky-900/10',
-            'debug' => 'border-l-4 border-gray-400 dark:border-gray-500 bg-gray-50 dark:bg-gray-800/50',
-            default => 'border-l-4 border-gray-300 dark:border-gray-600',
+            'emergency' => 'fl-border-l-4 fl-border-red-700 dark:fl-border-red-600 fl-bg-red-50 dark:fl-bg-red-900/10',
+            'alert' => 'fl-border-l-4 fl-border-red-600 dark:fl-border-red-500 fl-bg-red-50 dark:fl-bg-red-900/10',
+            'critical' => 'fl-border-l-4 fl-border-red-500 dark:fl-border-red-400 fl-bg-red-50 dark:fl-bg-red-900/10',
+            'error' => 'fl-border-l-4 fl-border-red-500 dark:fl-border-red-400 fl-bg-red-50 dark:fl-bg-red-900/10',
+            'warning' => 'fl-border-l-4 fl-border-yellow-500 dark:fl-border-yellow-400 fl-bg-yellow-50 dark:fl-bg-yellow-900/10',
+            'info' => 'fl-border-l-4 fl-border-blue-500 dark:fl-border-blue-400 fl-bg-blue-50 dark:fl-bg-blue-900/10',
+            'notice' => 'fl-border-l-4 fl-border-sky-400 dark:fl-border-sky-300 fl-bg-sky-50 dark:fl-bg-sky-900/10',
+            'debug' => 'fl-border-l-4 fl-border-gray-400 dark:fl-border-gray-500 fl-bg-gray-50 dark:fl-bg-gray-800/50',
+            default => 'fl-border-l-4 fl-border-gray-300 dark:fl-border-gray-600',
         };
     }
 

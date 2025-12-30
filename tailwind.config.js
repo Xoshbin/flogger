@@ -1,5 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+    prefix: 'fl-',
+    important: true,
     content: [
         './resources/views/**/*.blade.php',
         './src/**/*.php',
