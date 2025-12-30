@@ -1,5 +1,5 @@
 <x-filament-panels::page>
-    <div class="flex gap-6 h-screen" dir="ltr">
+    <div class="flex gap-6 h-screen">
         <!-- Sidebar (fixed width) -->
         <div class="w-96 flex-shrink-0 bg-white dark:bg-gray-900 shadow rounded-lg p-4 ring-1 ring-gray-950/5 dark:ring-white/10">
             <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Log Files</h3>
@@ -7,7 +7,7 @@
                 @foreach ($logFiles as $logFile)
                     <li class="flex justify-between items-center">
                         <button
-                            class="w-full text-left p-2 bg-gray-100 dark:bg-gray-800 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900 focus:outline-none focus:ring focus:ring-blue-300 transition text-gray-900 dark:text-gray-100"
+                            class="w-full text-start p-2 bg-gray-100 dark:bg-gray-800 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900 focus:outline-none focus:ring focus:ring-blue-300 transition text-gray-900 dark:text-gray-100"
                             wire:click="loadLogs('{{ $logFile['date'] }}')"
                         >
                             <div class="flex justify-between items-center">
@@ -117,9 +117,9 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <div class="mt-2 text-sm text-gray-800 dark:text-gray-200 overflow-x-auto whitespace-pre-wrap break-words border-t dark:border-gray-700 pt-2">
+                                    <div class="mt-2 text-sm text-gray-800 dark:text-gray-200 overflow-x-auto whitespace-pre-wrap break-words border-t dark:border-gray-700 pt-2 text-left" dir="ltr">
                                         @if ($expandedLogIndex === $index)
-                                            <pre class="bg-gray-100 dark:bg-gray-900 p-2 rounded-lg text-sm font-mono text-gray-800 dark:text-gray-200 overflow-y-auto whitespace-pre-wrap">{{ $logLine['full'] }}</pre>
+                                            <pre class="bg-gray-100 dark:bg-gray-900 p-2 rounded-lg text-sm font-mono text-gray-800 dark:text-gray-200 overflow-y-auto whitespace-pre-wrap text-left" dir="ltr">{{ $logLine['full'] }}</pre>
                                         @else
                                             <p class="text-gray-700 dark:text-gray-300">{{ $logLine['excerpt'] }}</p>
                                         @endif

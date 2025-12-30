@@ -68,6 +68,23 @@ If you need to publish assets (though usually handled automatically):
 php artisan vendor:publish --tag="flogger-assets"
 ```
 
+## Development
+
+If you want to contribute or modify the package's styling:
+
+1.  **Install dependencies**:
+    ```bash
+    npm install
+    ```
+
+2.  **Modifying Assets**:
+    *   **Blade Templates**: Changes to `resources/views` are reflected immediately. No build step required (just refresh your browser).
+    *   **CSS Styles**: If you modify `resources/css/flogger.css` or use new Tailwind classes in your views, you must recompile the CSS:
+        ```bash
+        npm run build
+        ```
+    *   The compiled CSS is located at `resources/dist/flogger.css` and is automatically registered by the service provider.
+
 ## Credits
 
 -   [Khoshbin](https://github.com/Xoshbin)
