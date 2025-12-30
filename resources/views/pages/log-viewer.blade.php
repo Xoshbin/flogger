@@ -1,18 +1,18 @@
 <x-filament-panels::page>
     <div class="flex gap-6 h-screen" dir="ltr">
         <!-- Sidebar (fixed width) -->
-        <div class="w-96 flex-shrink-0 bg-white shadow rounded-lg p-4">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Log Files</h3>
+        <div class="w-96 flex-shrink-0 bg-white dark:bg-gray-900 shadow rounded-lg p-4 ring-1 ring-gray-950/5 dark:ring-white/10">
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Log Files</h3>
             <ul class="space-y-2">
                 @foreach ($logFiles as $logFile)
                     <li class="flex justify-between items-center">
                         <button
-                            class="w-full text-left p-2 bg-gray-100 rounded-md hover:bg-blue-100 focus:outline-none focus:ring focus:ring-blue-300 transition"
+                            class="w-full text-left p-2 bg-gray-100 dark:bg-gray-800 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900 focus:outline-none focus:ring focus:ring-blue-300 transition text-gray-900 dark:text-gray-100"
                             wire:click="loadLogs('{{ $logFile['date'] }}')"
                         >
                             <div class="flex justify-between items-center">
                                 <span>{{ $logFile['date'] }}</span>
-                                <span class="text-sm text-gray-500">{{ $logFile['size'] }}</span>
+                                <span class="text-sm text-gray-500 dark:text-gray-400">{{ $logFile['size'] }}</span>
                             </div>
                         </button>
                         <button
@@ -30,14 +30,14 @@
         </div>
 
         <!-- Logs Viewer (flexible width) -->
-        <div class="flex-1 bg-white shadow rounded-lg flex flex-col min-w-0">
-            <div class="p-4 border-b border-gray-200 flex-shrink-0">
+        <div class="flex-1 bg-white dark:bg-gray-900 shadow rounded-lg flex flex-col min-w-0 ring-1 ring-gray-950/5 dark:ring-white/10">
+            <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
                 <div class="flex justify-between items-center">
                     @if ($selectedDate)
                         <div class="flex items-center gap-4">
-                            <h2 class="text-xl font-bold text-gray-800">Logs for {{ $selectedDate }}</h2>
+                            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-200">Logs for {{ $selectedDate }}</h2>
                             @if ($this->totalPages > 1)
-                                <div class="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-1 border border-gray-200">
+                                <div class="flex items-center gap-2 bg-gray-50 dark:bg-gray-800 rounded-lg px-3 py-1 border border-gray-200 dark:border-gray-700">
                                     <button
                                         wire:click="previousPage"
                                         wire:loading.attr="disabled"
@@ -61,7 +61,7 @@
                             @endif
                         </div>
                     @else
-                        <h2 class="text-xl font-bold text-gray-800">Log Viewer</h2>
+                        <h2 class="text-xl font-bold text-gray-800 dark:text-gray-200">Log Viewer</h2>
                     @endif
                 </div>
             </div>
@@ -72,12 +72,12 @@
                         @foreach (collect($logLines)->reverse() as $index => $logLine)
                             <li>
                                 <div
-                                    class="p-4 rounded-lg shadow-sm border cursor-pointer hover:bg-gray-100 transition-all {{ $this->getLogLineClass($logLine['type']) }}"
+                                    class="p-4 rounded-lg shadow-sm border cursor-pointer bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all {{ $this->getLogLineClass($logLine['type']) }}"
                                     wire:click="toggleLogExpansion({{ $index }})">
                                     <div class="flex justify-between items-center mb-2">
-                                        <span class="text-sm font-semibold text-gray-600 capitalize">{{ $logLine['type'] }}</span>
+                                        <span class="text-sm font-semibold text-gray-600 dark:text-gray-400 capitalize">{{ $logLine['type'] }}</span>
                                         <div class="flex items-center gap-2" x-data="{ copied: false }">
-                                            <span class="text-sm text-gray-500">{{ $logLine['timestamp'] }}</span>
+                                            <span class="text-sm text-gray-500 dark:text-gray-400">{{ $logLine['timestamp'] }}</span>
                                             <button
                                                 x-on:click.stop="
                                                     const text = @js($logLine['full']);
@@ -117,11 +117,11 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <div class="mt-2 text-sm text-gray-800 overflow-x-auto whitespace-pre-wrap break-words border-t pt-2">
+                                    <div class="mt-2 text-sm text-gray-800 dark:text-gray-200 overflow-x-auto whitespace-pre-wrap break-words border-t dark:border-gray-700 pt-2">
                                         @if ($expandedLogIndex === $index)
-                                            <pre class="bg-gray-100 p-2 rounded-lg text-sm font-mono text-gray-800 overflow-y-auto whitespace-pre-wrap">{{ $logLine['full'] }}</pre>
+                                            <pre class="bg-gray-100 dark:bg-gray-900 p-2 rounded-lg text-sm font-mono text-gray-800 dark:text-gray-200 overflow-y-auto whitespace-pre-wrap">{{ $logLine['full'] }}</pre>
                                         @else
-                                            <p class="text-gray-700">{{ $logLine['excerpt'] }}</p>
+                                            <p class="text-gray-700 dark:text-gray-300">{{ $logLine['excerpt'] }}</p>
                                         @endif
                                     </div>
                                 </div>
@@ -129,7 +129,7 @@
                         @endforeach
                     </ul>
                 @else
-                    <div class="flex items-center justify-center h-full text-center text-gray-500">
+                    <div class="flex items-center justify-center h-full text-center text-gray-500 dark:text-gray-400">
                         @if ($selectedDate)
                             No logs available for this file.
                         @else

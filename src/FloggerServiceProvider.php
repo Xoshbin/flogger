@@ -20,7 +20,7 @@ class FloggerServiceProvider extends PackageServiceProvider
     public function packageBooted()
     {
         FilamentAsset::register([
-            Css::make('flogger-assets', __DIR__.'/../resources/css/flogger/style.css'),
-        ], 'xpshbin/flogger');
+            Css::make('flogger-assets', __DIR__.'/../resources/dist/flogger.css'),
+        ], 'xoshbin/flogger');
     }
 }

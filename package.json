@@ -1,0 +1,12 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "npx tailwindcss -i ./resources/css/flogger.css -o ./resources/dist/flogger.css --minify"
+    },
+    "devDependencies": {
+        "tailwindcss": "^3.4.0",
+        "@tailwindcss/forms": "^0.5.7",
+        "@tailwindcss/typography": "^0.5.10"
+    }
+}
