@@ -6,14 +6,15 @@ use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use UnitEnum;
 
 class LogViewer extends Page
 {
-    protected static ?string $navigationGroup = 'Settings';
+    protected static string|UnitEnum|null $navigationGroup = 'Settings';
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-document-text';
 
-    protected static string $view = 'flogger::pages.log-viewer';
+    protected string $view = 'flogger::pages.log-viewer';
 
     protected static ?string $navigationLabel = 'Log Viewer';
 
