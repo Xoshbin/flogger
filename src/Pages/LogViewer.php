@@ -2,6 +2,7 @@
 
 namespace Xoshbin\Flogger\Pages;
 
+use BackedEnum;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\File;
@@ -12,7 +13,7 @@ class LogViewer extends Page
 {
     protected static string|UnitEnum|null $navigationGroup = 'Settings';
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-document-text';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
 
     protected string $view = 'flogger::pages.log-viewer';
 
@@ -152,7 +153,7 @@ class LogViewer extends Page
 
         // Match log entries using regex to split them
         preg_match_all(
-            '/\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\]\s([a-zA-Z.]+):\s(.*?)((?=\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\])|$)/s',
+            '/\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\]\s([^:]+):\s(.*?)((?=\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\])|$)/s',
             $fileContent,
             $matches,
             PREG_SET_ORDER
@@ -160,9 +161,11 @@ class LogViewer extends Page
 
         $this->logLines = collect($matches)
             ->map(function ($match, $index) {
+                $parts = explode('.', $match[2]);
+
                 return [
                     'timestamp' => $match[1], // Timestamp
-                    'type' => strtolower(explode('.', $match[2])[1] ?? 'unknown'), // Log type (e.g., error, info)
+                    'type' => strtolower(end($parts) ?: 'unknown'), // Log type (e.g., error, info)
                     'excerpt' => substr(trim($match[3]), 0, 100), // Excerpt
                     'full' => trim($match[3]), // Full log entry
                     'index' => $index,
