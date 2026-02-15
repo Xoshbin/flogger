@@ -14,4 +14,15 @@ return [
     'exclude_files' => [
         'schedule-*',
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Chunk Size
+    |--------------------------------------------------------------------------
+    |
+    | The size of each log chunk to read from the log file in bytes.
+    | This is used to paginate the log file content.
+    |
+    */
+    'chunk_size' => 50 * 1024, // 50KB
 ];

@@ -69,4 +69,24 @@ LOG;
         $this->assertEquals('info', $viewer->logLines[0]['type']);
         $this->assertStringContainsString('AAAAA', $viewer->logLines[0]['full']);
     }
+
+    /** @test */
+    public function it_handles_invalid_utf8_and_multibyte_characters_in_excerpts()
+    {
+        // 0xFF is invalid UTF-8
+        $malformedContent = "[2026-02-15 10:00:00] local.INFO: Hello \xFF World ".str_repeat('م', 60);
+
+        $logPath = storage_path('logs/encoding.log');
+        File::put($logPath, $malformedContent);
+
+        $viewer = new LogViewer;
+        $viewer->logFiles = [['date' => 'encoding', 'path' => $logPath, 'size' => '1 KB']];
+        $viewer->loadLogs('encoding');
+
+        $this->assertCount(1, $viewer->logLines);
+        // Depending on PHP config, it might be ? or nothing or a substitution char.
+        // But the key is that it's JSON encodable.
+        $this->assertNotFalse(json_encode($viewer->logLines));
+        $this->assertEquals(JSON_ERROR_NONE, json_last_error());
+    }
 }

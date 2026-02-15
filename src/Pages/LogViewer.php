@@ -67,8 +67,12 @@ class LogViewer extends Page
 
     public $totalPages = 1;
 
-    // Define the maximum size to read (2MB)
-    const MAX_LOG_SIZE = 2 * 1024 * 1024; // 2MB
+    protected int $chunkSize;
+
+    public function __construct()
+    {
+        $this->chunkSize = config('flogger.chunk_size', 50 * 1024);
+    }
 
     public function loadLogs($date)
     {
@@ -81,7 +85,7 @@ class LogViewer extends Page
 
         if ($filePath && File::exists($filePath)) {
             $fileSize = filesize($filePath);
-            $this->totalPages = ceil($fileSize / self::MAX_LOG_SIZE);
+            $this->totalPages = ceil($fileSize / $this->chunkSize);
             // Ensure at least 1 page
             if ($this->totalPages < 1) {
                 $this->totalPages = 1;
@@ -121,12 +125,12 @@ class LogViewer extends Page
     protected function loadChunk($filePath)
     {
         $fileSize = filesize($filePath);
-        $offset = max(0, $fileSize - ($this->page * self::MAX_LOG_SIZE));
-        $length = self::MAX_LOG_SIZE;
+        $offset = max(0, $fileSize - ($this->page * $this->chunkSize));
+        $length = $this->chunkSize;
 
         // Adjust length if we are at the beginning of the file and the chunk is smaller than MAX_LOG_SIZE
         if ($offset == 0) {
-            $length = $fileSize - (($this->totalPages - 1) * self::MAX_LOG_SIZE);
+            $length = $fileSize - (($this->totalPages - 1) * $this->chunkSize);
         }
 
         try {
@@ -162,12 +166,13 @@ class LogViewer extends Page
         $this->logLines = collect($matches)
             ->map(function ($match, $index) {
                 $parts = explode('.', $match[2]);
+                $content = mb_convert_encoding($match[3], 'UTF-8', 'UTF-8');
 
                 return [
                     'timestamp' => $match[1], // Timestamp
                     'type' => strtolower(end($parts) ?: 'unknown'), // Log type (e.g., error, info)
-                    'excerpt' => substr(trim($match[3]), 0, 100), // Excerpt
-                    'full' => trim($match[3]), // Full log entry
+                    'excerpt' => mb_substr(trim($content), 0, 100), // Excerpt
+                    'full' => trim($content), // Full log entry
                     'index' => $index,
                 ];
             })

@@ -5,7 +5,7 @@
             <h3 class="fl-text-lg fl-font-semibold fl-text-gray-800 dark:fl-text-gray-200 fl-mb-4">Log Files</h3>
             <ul class="fl-space-y-2">
                 @foreach ($logFiles as $logFile)
-                    <li class="fl-flex fl-justify-between fl-items-center">
+                    <li wire:key="log-file-{{ $logFile['date'] }}" class="fl-flex fl-justify-between fl-items-center">
                         <button
                             class="fl-w-full fl-text-start fl-p-2 fl-bg-gray-100 dark:fl-bg-gray-800 fl-rounded-md hover:fl-bg-blue-100 dark:hover:fl-bg-blue-900 focus:fl-outline-none focus:fl-ring focus:fl-ring-blue-300 fl-transition fl-text-gray-900 dark:fl-text-gray-100"
                             wire:click="loadLogs('{{ $logFile['date'] }}')"
@@ -70,7 +70,7 @@
                 @if ($logLines)
                     <ul class="fl-space-y-4">
                         @foreach (collect($logLines)->reverse() as $index => $logLine)
-                            <li>
+                            <li wire:key="log-line-{{ $logLine['index'] }}">
                                 <div
                                     class="fl-p-4 fl-rounded-lg fl-shadow-sm fl-border fl-cursor-pointer fl-bg-white dark:fl-bg-gray-800 hover:fl-bg-gray-100 dark:hover:fl-bg-gray-700 fl-transition-all {{ $this->getLogLineClass($logLine['type']) }}"
                                     wire:click="toggleLogExpansion({{ $index }})">
